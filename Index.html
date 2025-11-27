@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bionexus – Biology Club</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* =========================
+           🎨 COLOR THEME (BIONEXUS)
+        ============================ */
+        :root {
+            --main-bg: #3b001c;       /* عنابي غامق */
+            --main-bg-light: #530026; /* درجة أفتح */
+            --pink: #ff4d88;          /* وردي من اللوجو */
+            --light-pink: #ff8fb8;
+            --white: #fff;
+            --gray: #eee;
+            --gold: #FFD700;          /* لون ذهبي جديد */
+            --light-gold: #FFF8DC;    /* ذهبي فاتح */
+            --soft-gold: rgba(255, 215, 0, 0.1); /* ذهبي شفاف */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #faf5f8;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+              LOADING PAGE  
+        ============================ */
+        #loading-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--main-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+
+        .loading-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-logo {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 5px solid transparent;
+            border-top: 5px solid var(--pink);
+            border-right: 5px solid var(--light-pink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            color: var(--white);
+            font-weight: bold;
+            animation: spin 2s linear infinite;
+        }
+
+        .loading-logo::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-bottom: 3px solid var(--light-pink);
+            border-left: 3px solid var(--pink);
+            animation: spin 1.5s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            color: var(--white);
+            font-size: 1.4rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .loading-text::after {
+            content: "";
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: "."; }
+            40% { content: ".."; }
+            60% { content: "..."; }
+            80%, 100% { content: ""; }
+        }
+
+        /* =========================
+              NAVIGATION BAR  
+        ============================ */
+        header {
+            background: var(--main-bg);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        nav {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--white);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav img {
+            height: 45px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 25px;
+            position: relative;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: var(--white);
+            font-size: 1rem;
+            transition: 0.3s;
+            padding: 5px 0;
+        }
+
+        .nav-links li a:hover {
+            color: var(--pink);
+        }
+
+        .nav-links li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--pink);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links li a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            color: var(--white);
+            font-size: 1.5rem;
+        }
+
+        /* =========================
+               HERO SECTION  
+        ============================ */
+        .hero {
+            background: linear-gradient(rgba(59, 0, 28, 0.8), rgba(59, 0, 28, 0.8)),
+                        url('https://images.unsplash.com/photo-1532094349884-543bc11b234d');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 120px 20px;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* DNA Animation Background - 3D */
+        .dna-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .dna-helix {
+            position: absolute;
+            width: 100%;
+            height: 200%;
+            top: -50%;
+            left: 0;
+            transform-style: preserve-3d;
+            animation: dnaFloat 25s linear infinite;
+        }
+
+        .dna-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            box-shadow: 0 0 10px var(--gold);
+        }
+
+        .dna-connection {
+            position: absolute;
+            height: 40px;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            transform-origin: top center;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes dnaFloat {
+            0% { transform: translateY(-50%) rotateX(0deg) rotateY(0deg); }
+            25% { transform: translateY(-25%) rotateX(90deg) rotateY(90deg); }
+            50% { transform: translateY(0%) rotateX(180deg) rotateY(180deg); }
+            75% { transform: translateY(-25%) rotateX(270deg) rotateY(270deg); }
+            100% { transform: translateY(-50%) rotateX(360deg) rotateY(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--light-pink);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: auto;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .scroll-indicator {
+            margin-top: 40px;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator i {
+            font-size: 2rem;
+            color: var(--light-pink);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* =========================
+              STATS SECTION
+        ============================ */
+        .stats {
+            padding: 80px 20px;
+            background: var(--white);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background: var(--white);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .stat-box.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--main-bg);
+            margin-bottom: 10px;
+        }
+
+        .stat-text {
+            font-size: 1.2rem;
+            color: var(--main-bg-light);
+        }
+
+        /* =========================
+              ABOUT SECTION  
+        ============================ */
+        .about {
+            padding: 100px 20px;
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--main-bg);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            text-align: center;
+            width: 100%;
+        }
+
+        .section-title.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 3px;
+            background: var(--pink);
+            bottom: -10px;
+            left: 20%;
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+            text-align: left;
+            font-size: 1.2rem;
+            line-height: 1.7;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .about-text.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .about img {
+            width: 380px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px #d3a4b9;
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        .about img.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .about img:hover {
+            transform: scale(1.03);
+        }
+
+        /* =========================
+              VISION & MISSION SECTION
+        ============================ */
+        .vision-mission {
+            padding: 100px 20px;
+            background: var(--main-bg-light);
+            color: var(--white);
+        }
+
+        .vision-mission-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .vision-box, .mission-box {
+            background: var(--main-bg);
+            padding: 40px 30px;
+            border-radius: 15px;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .vision-box.animate, .mission-box.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .vision-box:hover, .mission-box:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .vision-box h3, .mission-box h3 {
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .vision-box h3::after, .mission-box h3::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 3px;
+            background: var(--gold);
+            bottom: -8px;
+            left: 20%;
+        }
+
+        .vision-box p, .mission-box p {
+            font-size: 1.3rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* =========================
+              OFFERINGS SECTION
+        ============================ */
+        .offerings {
+            padding: 100px 20px;
+            background: var(--white);
+            color: var(--main-bg);
+        }
+
+        .offerings-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .offering-box {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 15px;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 2px solid transparent;
+        }
+
+        .offering-box.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .offering-box:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .offering-box.active {
+            background: var(--soft-gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+            border: 2px solid var(--gold);
+            animation: goldenGlow 2s infinite alternate;
+        }
+
+        .offering-box h3 {
+            color: var(--main-bg);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .offering-box p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .offering-features {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .feature-tag {
+            background: var(--main-bg-light);
+            color: var(--white);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1rem;
+        }
+
+        @keyframes goldenGlow {
+            0% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
+            100% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+        }
+
+        /* =========================
+              ACHIEVEMENTS SECTION
+        ============================ */
+        .achievements {
+            padding: 100px 20px;
+            background: var(--main-bg-light);
+            color: var(--white);
+        }
+
+        .achievements-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .achievement-box {
+            background: var(--main-bg);
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .achievement-box.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .achievement-box:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .achievement-box.active {
+            background: var(--soft-gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+            border: 2px solid var(--gold);
+            animation: goldenGlow 2s infinite alternate;
+        }
+
+        .achievement-box h3 {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .achievement-box p {
+            color: var(--white);
+            font-size: 1.3rem;
+        }
+
+        /* =========================
+              BRANCHES SECTION
+        ============================ */
+        .branches {
+            padding: 100px 20px;
+            background: var(--white);
+            color: var(--main-bg);
+        }
+
+        .branches-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .branch-box {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 15px;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .branch-box.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .branch-box:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .branch-box.active {
+            background: var(--soft-gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+            border: 2px solid var(--gold);
+            animation: goldenGlow 2s infinite alternate;
+        }
+
+        .branch-box h3 {
+            color: var(--main-bg);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .branch-box p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .branch-sessions {
+            margin-top: 15px;
+            color: var(--main-bg-light);
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .show-more {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--main-bg-light);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .show-more:hover {
+            color: var(--main-bg);
+        }
+
+        .more-info {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, margin-top 0.3s ease;
+            margin-top: 0;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .more-info.active {
+            max-height: 500px;
+            margin-top: 15px;
+        }
+
+        /* =========================
+               FOOTER  
+        ============================ */
+        footer {
+            background: var(--main-bg);
+            color: var(--white);
+            padding: 30px 0;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .footer-content {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--pink);
+        }
+
+        /* =========================
+              RESPONSIVE DESIGN
+        ============================ */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background: var(--main-bg);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 50px;
+                transition: right 0.5s ease;
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .offerings-container,
+            .achievements-container,
+            .branches-container,
+            .vision-mission-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =========================
+             LOADING PAGE  
+    ============================ -->
+    <div id="loading-page">
+        <div class="loading-container">
+            <div class="loading-logo">B</div>
+        </div>
+        <div class="loading-text">BIONEXUS</div>
+    </div>
+
+    <!-- =========================
+             NAVIGATION  
+    ============================ -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="Bio.jfif" alt="Logo">
+                <span>BIONEXUS</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#vision-mission">Vision & Mission</a></li>
+                <li><a href="history.html">History</a></li>
+                <li><a href="competitions.html">Competitions</a></li>
+                <li><a href="supervisors.html">Supervisors</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="apply.html">Apply</a></li>
+                <li><a href="management.html">Management</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- =========================
+             HERO  
+    ============================ -->
+    <section class="hero" id="home">
+        <div class="dna-background" id="dna-container">
+            <!-- سيتم إنشاء DNA ديناميكيًا باستخدام JavaScript -->
+        </div>
+        <div class="hero-content">
+            <div class="hero-subtitle">Biology Club of Maadi STEM School for Girls</div>
+            <h1>Welcome to Bionexus</h1>
+            <p>Where science meets curiosity and innovation. Join our community of young biologists exploring the wonders of life.</p>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================
+             STATS
+    ============================ -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-number">50+</div>
+                <div class="stat-text">Active Members</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">6+</div>
+                <div class="stat-text">Weekly Sessions</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">5+</div>
+                <div class="stat-text">Workshops</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">10+</div>
+                <div class="stat-text">Expert Mentors</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================
+             ABOUT  
+    ============================ -->
+    <section class="about" id="about">
+        <h2 class="section-title">About Us</h2>
+
+        <div class="about-content">
+            <div class="about-text">
+                <p>Bionexus is a scientific community that aims to enhance students' passion for biology through experiments, research, competitions, and collaborative projects.</p>
+                <br>
+                <p>We provide a space where young scientists can grow, explore, innovate, and connect with biology experts. Our club is dedicated to fostering the next generation of biologists through hands-on experiences and mentorship.</p>
+                <br>
+                <p>At Bionexus, we believe that biology is not just a subject but a gateway to understanding life itself. Our members engage in various activities that challenge their thinking and expand their knowledge beyond the classroom.</p>
+                <br>
+                <p>Founded in 2020, Bionexus has grown to become one of the most active and successful clubs at Maadi STEM School for Girls. Our members have won numerous awards in national and international competitions.</p>
+                <br>
+                <p>We organize regular field trips to research institutions, host guest lectures from leading biologists, and provide resources for students to conduct their own research projects.</p>
+            </div>
+
+            <img src="https://images.unsplash.com/photo-1581094794329-c6fe63c7e31e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Biology lab">
+        </div>
+    </section>
+
+    <!-- =========================
+             VISION & MISSION
+    ============================ -->
+    <section class="vision-mission" id="vision-mission">
+        <h2 class="section-title" style="color: var(--gold);">Vision & Mission</h2>
+        <div class="vision-mission-container">
+            <div class="vision-box">
+                <h3>Our Vision</h3>
+                <p>To cultivate a generation of innovative biologists who will lead scientific discovery and address global challenges through biological research and application.</p>
+                <p>We envision a future where our members become pioneers in biotechnology, medicine, environmental conservation, and scientific education.</p>
+            </div>
+            <div class="mission-box">
+                <h3>Our Mission</h3>
+                <p>To provide an engaging, supportive environment where students can explore biology beyond the classroom through hands-on experiments, research projects, and collaboration with experts.</p>
+                <p>We aim to foster critical thinking, scientific curiosity, and ethical responsibility in our members while preparing them for success in scientific careers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================
+             OFFERINGS
+    ============================ -->
+    <section class="offerings">
+        <h2 class="section-title">What We Offer</h2>
+        <div class="offerings-container">
+            <div class="offering-box">
+                <h3>Research Programs</h3>
+                <p>Comprehensive program to empower students to craft complete research or systematic review papers from scratch.</p>
+                <div class="offering-features">
+                    <span class="feature-tag">Experienced Mentors</span>
+                    <span class="feature-tag">Published Papers</span>
+                </div>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>Our research programs are designed to guide students through the entire research process, from formulating hypotheses to presenting findings. Students work closely with mentors who are experts in their fields.</p>
+                    <p>We provide access to laboratory equipment, scientific databases, and statistical analysis tools. Many of our students have published their work in reputable scientific journals.</p>
+                </div>
+            </div>
+           
+            <div class="offering-box">
+                <h3>Practical Workshops</h3>
+                <p>Hands-on Biology experience for our sophomore members.</p>
+                <div class="offering-features">
+                    <span class="feature-tag">Modern Equipment</span>
+                    <span class="feature-tag">Practical Skills</span>
+                </div>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>Our workshops cover a wide range of techniques including DNA extraction, microscopy, gel electrophoresis, and bacterial culture. Students learn to use professional laboratory equipment.</p>
+                    <p>Each workshop is designed to complement the school curriculum while introducing advanced techniques. Safety protocols are strictly followed in all practical sessions.</p>
+                </div>
+            </div>
+            <div class="offering-box">
+                <h3>Computational Biology</h3>
+                <p>Coming soon....</p>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>We are developing a computational biology program that will introduce students to bioinformatics, data analysis, and programming for biological research.</p>
+                    <p>This program will cover sequence alignment, phylogenetic analysis, and statistical methods for biological data. No prior programming experience is required.</p>
+                </div>
+            </div>
+            <div class="offering-box">
+                <h3>Magazine</h3>
+                <p>A one-on-one coaching program to transform student's scientific interests into meaningful narrative experiences.</p>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>Our magazine, "Bionexus Chronicles," is written and edited entirely by students. It features articles on recent biological discoveries, student research, and interviews with scientists.</p>
+                    <p>Students receive guidance on science communication, writing techniques, and graphic design. The magazine is published quarterly and distributed to schools and libraries.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================
+             ACHIEVEMENTS
+    ============================ -->
+    <section class="achievements">
+        <h2 class="section-title" style="color: var(--gold);">Our Achievements</h2>
+        <div class="achievements-container">
+            <div class="achievement-box">
+                <h3>ISEF</h3>
+                <p></p>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>Our team won first place in the International Science and Engineering Fair with their project on antibiotic resistance in local water sources.</p>
+                    <p>The project involved extensive fieldwork and laboratory analysis over six months.</p>
+                </div>
+            </div>
+            <div class="achievement-box">
+                <h3>RISE</h3>
+                <p></p>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>One of our members was selected as a Global Winner in the Rhodes Initiative for STEM Excellence for her research on neurodegenerative diseases.</p>
+                    <p>She received a full scholarship to attend an international science summit.</p>
+                </div>
+            </div>
+            <div class="achievement-box">
+                <h3>International Biology Bowl</h3>
+                <p></p>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>Our team competed against 50 teams from 30 countries and secured second place in the International Biology Bowl.</p>
+                    <p>They demonstrated exceptional knowledge in all branches of biology during the intense competition.</p>
+                </div>
+            </div>
+            <div class="achievement-box">
+                <h3>IBO</h3>
+                <p></p>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>We achieved third place in the International Biology Olympiad, with our students excelling in both theoretical and practical examinations.</p>
+                    <p>This is the highest placement our school has ever achieved in this prestigious competition.</p>
+                </div>
+            </div>
+            <div class="achievement-box">
+                <h3>IBB Competition</h3>
+                <p></p>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>Our team secured second place in the National Biology Bowl competition, competing against 100 teams from across the country.</p>
+                    <p>They demonstrated comprehensive knowledge in genetics, ecology, and human physiology.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================
+             BRANCHES
+    ============================ -->
+    <section class="branches">
+        <h2 class="section-title">Our Branches</h2>
+        <div class="branches-container">
+            <div class="branch-box">
+                <h3>Biochemistry & Cell Biology</h3>
+                <p>Biochemistry explores the chemical processes within living organisms, focusing on molecules like proteins, carbohydrates, lipids, and nucleic acids.</p>
+                <div class="branch-sessions">70 Sessions</div>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>In this branch, students study metabolic pathways, enzyme kinetics, and cellular signaling. They learn techniques like chromatography, spectrophotometry, and cell culture.</p>
+                    <p>Recent projects include studying the effects of antioxidants on cell aging and analyzing protein structures using computational tools.</p>
+                </div>
+            </div>
+            <div class="branch-box">
+                <h3>Genetics & Evolution</h3>
+                <p>Genetics studies heredity and variation in living organisms, while evolution explores how species change over time through natural selection.</p>
+                <div class="branch-sessions">65 Sessions</div>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>Students in this branch work with DNA extraction, PCR, gel electrophoresis, and genetic mapping. They also study population genetics and phylogenetic analysis.</p>
+                    <p>Current research includes analyzing genetic diversity in local plant species and studying inheritance patterns in Drosophila.</p>
+                </div>
+            </div>
+            <div class="branch-box">
+                <h3>Neuroscience</h3>
+                <p>Neuroscience examines the structure and function of the nervous system, from molecular and cellular levels to behavior and cognition.</p>
+                <div class="branch-sessions">55 Sessions</div>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>This branch covers neuroanatomy, neural signaling, sensory systems, and cognitive processes. Students learn about EEG, neuroimaging, and behavioral experiments.</p>
+                    <p>Ongoing projects include studying the effects of environmental enrichment on learning and memory in animal models.</p>
+                </div>
+            </div>
+            <div class="branch-box">
+                <h3>Anatomy & Physiology</h3>
+                <p>Anatomy studies the structure of organisms and their parts, while physiology focuses on how those parts function and work together.</p>
+                <div class="branch-sessions">60 Sessions</div>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>Students explore human body systems through dissections, models, and physiological measurements. They learn about homeostasis, organ systems, and clinical applications.</p>
+                    <p>Research includes studying cardiovascular responses to exercise and analyzing respiratory function under different conditions.</p>
+                </div>
+            </div>
+            <div class="branch-box">
+                <h3>Ecology & Environmental Biology</h3>
+                <p>Ecology examines the relationships between organisms and their environment, including biodiversity, ecosystems, and conservation.</p>
+                <div class="branch-sessions">50 Sessions</div>
+                <div class="show-more">Show More</div>
+                <div class="more-info">
+                    <p>This branch involves field studies, biodiversity assessments, and environmental monitoring. Students learn about ecosystem dynamics and conservation strategies.</p>
+                    <p>Current projects include monitoring local bird populations and studying the impact of pollution on aquatic ecosystems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================
+               FOOTER  
+    ============================ -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div>© 2025 Bionexus – Maadi STEM School for Girls</div>
+            <div class="footer-links">
+                <a href="contact.html">Contact Us</a>
+                <a href="apply.html">Apply Now</a>
+                <a href="gallery.html">Gallery</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =========================
+              SCRIPT  
+    ============================ -->
+    <script>
+        // Loading page
+        window.onload = function () {
+            setTimeout(function () {
+                document.getElementById("loading-page").style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById("loading-page").style.display = "none";
+                }, 800);
+            }, 1300);
+            
+            // إنشاء DNA ثلاثي الأبعاد
+            create3dDNA();
+        };
+
+        // Hamburger menu
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.section-title, .about-text, .about img, .stat-box, .offering-box, .achievement-box, .branch-box, .vision-box, .mission-box').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Scroll indicator
+        document.querySelector('.scroll-indicator').addEventListener('click', () => {
+            window.scrollTo({
+                top: document.querySelector('.stats').offsetTop,
+                behavior: 'smooth'
+            });
+        });
+
+        // Show More functionality
+        document.querySelectorAll('.show-more').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const moreInfo = this.nextElementSibling;
+                moreInfo.classList.toggle('active');
+                this.textContent = moreInfo.classList.contains('active') ? 'Show Less' : 'Show More';
+            });
+        });
+
+        // Add click effects to cards with golden highlight
+        document.querySelectorAll('.offering-box, .achievement-box, .branch-box').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove active class from all cards
+                document.querySelectorAll('.offering-box, .achievement-box, .branch-box').forEach(c => {
+                    c.classList.remove('active');
+                });
+                
+                // Add active class to clicked card
+                this.classList.add('active');
+            });
+        });
+
+        // إنشاء DNA ثلاثي الأبعاد
+        function create3dDNA() {
+            const dnaContainer = document.getElementById('dna-container');
+            const helixCount = 5;
+            
+            for (let h = 0; h < helixCount; h++) {
+                const helix = document.createElement('div');
+                helix.className = 'dna-helix';
+                helix.style.left = `${10 + h * 20}%`;
+                helix.style.animationDelay = `${h * 5}s`;
+                
+                const nodeCount = 20;
+                for (let i = 0; i < nodeCount; i++) {
+                    const node = document.createElement('div');
+                    node.className = 'dna-node';
+                    node.style.top = `${i * 50}px`;
+                    node.style.left = '50%';
+                    node.style.transform = `translateX(-50%) rotateY(${i * 36}deg)`;
+                    helix.appendChild(node);
+                    
+                    if (i < nodeCount - 1) {
+                        const connection = document.createElement('div');
+                        connection.className = 'dna-connection';
+                        connection.style.top = `${i * 50 + 6}px`;
+                        connection.style.left = '50%';
+                        connection.style.transform = `translateX(-50%) rotateY(${i * 36}deg)`;
+                        helix.appendChild(connection);
+                    }
+                }
+                
+                dnaContainer.appendChild(helix);
+            }
+        }
+    </script>
+</body>
+</html>
